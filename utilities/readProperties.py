@@ -52,10 +52,7 @@ class ReadConfig:
         db_password = config.get('common info', 'db_password')
         return db_password  
 
-    @staticmethod
-    def get_aktar_geom():       
-        geom = config.get('common info','db_geom')
-        return geom
+    
 
 
   
