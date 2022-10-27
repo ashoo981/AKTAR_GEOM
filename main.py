@@ -1,5 +1,5 @@
-
 import pandas as pd
+import sys
 
 from pandas import ExcelWriter
 from pandas import ExcelFile
@@ -11,7 +11,7 @@ import psycopg2
 
 df = pd.read_excel('.\\Data\\PostgreAktar.xlsx','KaisOkunan')
 
-coor = readProperties.ReadConfig.get_aktar_geom()
+
 conn= None
 dbname= readProperties.ReadConfig.get_database_name()
 users= readProperties.ReadConfig.get_database_username()
@@ -42,6 +42,7 @@ for i in range( len(df['id'])-1):
         #sql =  f"insert into aktar_parsel (geom) values (ST_GeomFromText('POLYGON(('"+geom +"')) ' ))"
 
         sqlr =(sql.replace("(('","((")).replace("'))","))")
+        #sqlstr= str(sqlr.encode("UTF8"))
         #sql="'insert into aktar_parsel (geom) values  (ST_GeomFromText("'POLYGON(( '{text_geom}' )) )'"
 
         ###print (sqlr)
@@ -50,6 +51,11 @@ for i in range( len(df['id'])-1):
         cursor  = conn.cursor()
         cursor.execute(sqlr)
         conn.commit()
+
+        # fileToAppend = open("sql/sql.txt","a")
+        # fileToAppend.write("\n")
+        # fileToAppend.write(sqlstr.decode("UTF8")) 
+        # fileToAppend.close()
         print ("kayıt eklendi.")
 
 time.sleep(10)       
